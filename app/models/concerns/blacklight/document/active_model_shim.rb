@@ -24,7 +24,7 @@ module Blacklight::Document
         repository.find(id).documents.first
       end
     end
-    
+
     ##
     # Unique ID for the document
     def id
@@ -36,7 +36,7 @@ module Blacklight::Document
     def [] *args
       _source.send :[], *args
     end
-    
+
     def _read_attribute(attr)
       self[attr]
     end
@@ -44,7 +44,7 @@ module Blacklight::Document
     def as_json(options = nil)
       _source.as_json(options)
     end
-    
+
     ##
     # ActiveRecord::Persistence method stubs to get non-AR objects to
     # play nice with e.g. Blacklight's bookmarks
@@ -55,7 +55,7 @@ module Blacklight::Document
     def destroyed?
       false
     end
-    
+
     def new_record?
       false
     end

@@ -34,12 +34,12 @@ module Blacklight::Document
     extend ActiveModel::Naming
     include Blacklight::Document::Extensions
     include GlobalID::Identification
-  end    
+  end
 
   attr_reader :response, :_source
   alias_method :solr_response, :response
 
-  def initialize(source_doc={}, response=nil)
+  def initialize(source_doc = {}, response = nil)
     @_source = ActiveSupport::HashWithIndifferentAccess.new(source_doc).freeze
     @response = response
     apply_extensions
@@ -63,7 +63,7 @@ module Blacklight::Document
   # Helper method to check if value/multi-values exist for a given key.
   # The value can be a string, or a RegExp
   # Multiple "values" can be given; only one needs to match.
-  # 
+  #
   # Example:
   # doc.has?(:location_facet)
   # doc.has?(:location_facet, 'Clemons')
@@ -129,12 +129,12 @@ module Blacklight::Document
   module ClassMethods
     attr_writer :unique_key
     def unique_key
-      @unique_key ||= 'id' 
+      @unique_key ||= 'id'
     end
   end
-  
+
   private
-  
+
   def _source_responds_to? *args
     _source && self != _source && _source.respond_to?(*args)
   end

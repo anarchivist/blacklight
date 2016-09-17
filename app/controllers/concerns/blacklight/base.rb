@@ -33,7 +33,7 @@ module Blacklight::Base
 
       logger.error exception
 
-      flash[:notice] = flash_notice 
+      flash[:notice] = flash_notice
       redirect_to root_path
     end
   end

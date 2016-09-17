@@ -73,7 +73,7 @@ module Blacklight
           ##
           # == Blacklight view configuration
           ##
-          navbar: OpenStructWithHashAccess.new(partials: { }),
+          navbar: OpenStructWithHashAccess.new(partials: {}),
           # General configuration for all views
           index: ViewConfig::Index.new(
             # document presenter class used by helpers and views
@@ -171,7 +171,7 @@ module Blacklight
     # Initialize default values from the class attribute
     def initialize_default_values!
       Marshal.load(Marshal.dump(self.class.default_values)).each do |k, v|
-        self[k] ||=  v
+        self[k] ||= v
       end
     end
 
