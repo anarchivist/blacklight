@@ -130,7 +130,7 @@ module Blacklight::ConfigurationHelperBehavior
   ##
   # Get the default index view type
   def default_document_index_view_type
-    document_index_views.select { |k,config| config.respond_to? :default and config.default }.keys.first || document_index_views.keys.first
+    document_index_views.select { |k,config| config.respond_to?(:default) && config.default }.keys.first || document_index_views.keys.first
   end
 
   ##
@@ -160,7 +160,7 @@ module Blacklight::ConfigurationHelperBehavior
   ##
   # Default sort field
   def default_sort_field
-    (active_sort_fields.find { |k,config| config.respond_to? :default and config.default } || active_sort_fields.first).try(:last)
+    (active_sort_fields.find { |k,config| config.respond_to?(:default) && config.default } || active_sort_fields.first).try(:last)
   end
 
   ##
