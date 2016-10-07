@@ -49,10 +49,7 @@ module Blacklight::SearchFields
   # can't be found. 
   def label_for_search_field(key)
     field_def = search_field_def_for_key(key)
-    if field_def && field_def.label
-       field_def.label
-    else
-       I18n.t('blacklight.search.fields.default')
-    end            
+    return field_def.search_field_label if field_def
+    I18n.t('blacklight.search.fields.default')
   end
 end

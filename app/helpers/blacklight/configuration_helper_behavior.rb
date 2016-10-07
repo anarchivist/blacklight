@@ -59,38 +59,26 @@ module Blacklight::ConfigurationHelperBehavior
   # Look up the label for the index field
   def index_field_label document, field
     field_config = index_fields(document)[field]
-
-    field_label(
-      :"blacklight.search.fields.index.#{field}",
-      :"blacklight.search.fields.#{field}",
-      (field_config.label if field_config),
-      field.to_s.humanize
-    )
+    field_config.index_field_label
   end
+  deprecation_deprecate index_field_label: "use index_field_label on the field itself"
 
   ##
   # Look up the label for the show field
   def document_show_field_label document, field
     field_config = document_show_fields(document)[field]
-
-    field_label(
-      :"blacklight.search.fields.show.#{field}",
-      :"blacklight.search.fields.#{field}",
-      (field_config.label if field_config),
-      field.to_s.humanize
-    )
+    field_config.show_field_label
   end
+  deprecation_deprecate document_show_field_label: "use show_field_label on the field itself"
 
   ##
   # Look up the label for the facet field
   def facet_field_label field
     field_config = blacklight_config.facet_fields[field]
-    defaults = [:"blacklight.search.fields.facet.#{field}", :"blacklight.search.fields.#{field}"]
-    defaults << field_config.label if field_config
-    defaults << field.to_s.humanize
-
-    field_label(*defaults)
+    return field_config.facet_field_label if field_config
+    field.to_s.humanize
   end
+  deprecation_deprecate facet_field_label: "use facet_field_label on the field itself"
 
   def view_label view
     view_config = blacklight_config.view[view]
@@ -101,24 +89,6 @@ module Blacklight::ConfigurationHelperBehavior
       view_config.title,
       view.to_s.humanize
     )
-  end
-
-  ##
-  # Look up the label for a solr field.
-  #
-  # @overload label
-  #   @param [Symbol] an i18n key 
-  #
-  # @overload label, i18n_key, another_i18n_key, and_another_i18n_key
-  #   @param [String] default label to display if the i18n look up fails
-  #   @param [Symbol] i18n keys to attempt to look up 
-  #     before falling  back to the label
-  #   @param [Symbol] any number of additional keys
-  #   @param [Symbol] ...
-  def field_label *i18n_keys
-    first, *rest = i18n_keys.compact
-
-    t(first, default: rest)
   end
 
   def document_index_views

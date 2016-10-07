@@ -117,27 +117,29 @@ describe Blacklight::ConfigurationHelperBehavior do
 
   describe "#index_field_label" do
     let(:document) { instance_double(SolrDocument) }
+    let(:field) { Blacklight::Configuration::IndexField.new(label: 'some label', key: 'my_field') }
     it "looks up the label to display for the given document and field" do
-      allow(helper).to receive(:index_fields).and_return({ "my_field" => double(label: "some label") })
-      allow(helper).to receive(:field_label).with(:"blacklight.search.fields.index.my_field", :"blacklight.search.fields.my_field", "some label", "My field")
+      allow(helper).to receive(:index_fields).and_return({ "my_field" => field })
+      allow(field).to receive(:field_label).with(:"blacklight.search.fields.index.my_field", :"blacklight.search.fields.my_field", "some label", "My field")
       helper.index_field_label document, "my_field"
     end
   end
 
   describe "#document_show_field_label" do
     let(:document) { instance_double(SolrDocument) }
+    let(:field) { Blacklight::Configuration::ShowField.new(label: 'some label', key: 'my_field') }
     it "looks up the label to display for the given document and field" do
-      allow(helper).to receive(:document_show_fields).and_return({ "my_field" => double(label: "some label") })
-      allow(helper).to receive(:field_label).with(:"blacklight.search.fields.show.my_field", :"blacklight.search.fields.my_field", "some label", "My field")
+      allow(helper).to receive(:document_show_fields).and_return({ "my_field" => field })
+      allow(field).to receive(:field_label).with(:"blacklight.search.fields.show.my_field", :"blacklight.search.fields.my_field", "some label", "My field")
       helper.document_show_field_label document, "my_field"
     end
   end
 
   describe "#facet_field_label" do
-    let(:document) { instance_double(SolrDocument) }
+    let(:field) { instance_double(Blacklight::Configuration::FacetField) }
     it "looks up the label to display for the given document and field" do
-      allow(blacklight_config).to receive(:facet_fields).and_return({ "my_field" => double(label: "some label") })
-      allow(helper).to receive(:field_label).with(:"blacklight.search.fields.facet.my_field", :"blacklight.search.fields.my_field", "some label", "My field")
+      allow(blacklight_config).to receive(:facet_fields).and_return("my_field" => field)
+      allow(field).to receive(:facet_field_label)
       helper.facet_field_label "my_field"
     end
   end
@@ -148,28 +150,6 @@ describe Blacklight::ConfigurationHelperBehavior do
       allow(helper).to receive(:field_label).with(:"blacklight.search.view_title.my_view", :"blacklight.search.view.my_view", "some label", nil, "My view")
 
       helper.view_label "my_view"
-    end
-  end
-
-  describe "#field_label" do
-    it "looks up the label as an i18n string" do
-      allow(helper).to receive(:t).with(:some_key, default: []).and_return "my label"
-      label = helper.field_label :some_key
-
-      expect(label).to eq "my label"
-    end
-
-    it "passes the provided i18n keys to I18n.t" do
-      allow(helper).to receive(:t).with(:key_a, default: [:key_b, "default text"])
-
-      label = helper.field_label :key_a, :key_b, "default text"
-    end
-
-    it "compacts nil keys (fixes rails/rails#19419)" do
-      allow(helper).to receive(:t).with(:key_a, default: [:key_b])
-
-      label = helper.field_label :key_a, nil, :key_b
-
     end
   end
   
