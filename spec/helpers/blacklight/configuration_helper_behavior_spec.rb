@@ -93,28 +93,6 @@ describe Blacklight::ConfigurationHelperBehavior do
     end
   end
 
-  describe "#document_show_link_field" do
-    let(:document) { SolrDocument.new id: 123, a: 1, b: 2, c: 3 }
-
-    it "allows single values" do
-      blacklight_config.index.title_field = :a
-      f = helper.document_show_link_field document
-      expect(f).to eq :a
-    end
-    
-    it "retrieves the first field with data" do
-      blacklight_config.index.title_field = [:zzz, :b]
-      f = helper.document_show_link_field document
-      expect(f).to eq :b
-    end
-
-    it "fallbacks on the id" do
-      blacklight_config.index.title_field = [:zzz, :yyy]
-      f = helper.document_show_link_field document
-      expect(f).to eq 123
-    end
-  end
-
   describe "#index_field_label" do
     let(:document) { instance_double(SolrDocument) }
     let(:field) { Blacklight::Configuration::IndexField.new(label: 'some label', key: 'my_field') }
